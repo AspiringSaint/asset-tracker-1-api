@@ -5,10 +5,18 @@ const mongoose = require('mongoose');
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Import routes
 const { errorHandler } = require('./middlewares/error');
+
+const userRoutes = require('./routes/user.routes');
 
 // Middlewares
 app.use(express.json());
+
+
+// Routes
+app.use('/api/users', userRoutes);
+
 
 // Not found handler
 app.use((req, res, next) => {

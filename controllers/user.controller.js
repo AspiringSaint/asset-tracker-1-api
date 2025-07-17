@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 
@@ -14,6 +15,11 @@ const getAllUsers = async (req, res, next) => {
 // Get user by ID
 const getUserById = async (req, res, next) => {
     const userId = req.params.id;
+
+    if (!mongoose.isValidObjectId(userId)) {
+        return res.status(400).json({ message: 'Invalid user ID format' });
+    }
+
     try {
         const user = await User.findById(userId).select('-password');
         if (!user) {
@@ -45,6 +51,11 @@ const createUser = async (req, res, next) => {
 // Update user by ID
 const updateUserById = async (req, res, next) => {
     const userId = req.params.id;
+
+    if (!mongoose.isValidObjectId(userId)) {
+        return res.status(400).json({ message: 'Invalid user ID format' });
+    }
+
     try {
         const updatedUser = await User.findByIdAndUpdate(userId, req.body, { new: true }).select('-password');
         if (!updatedUser) {
@@ -59,6 +70,11 @@ const updateUserById = async (req, res, next) => {
 // Delete user by ID
 const deleteUserById = async (req, res, next) => {
     const userId = req.params.id;
+
+    if (!mongoose.isValidObjectId(userId)) {
+        return res.status(400).json({ message: 'Invalid user ID format' });
+    }
+
     try {
         const deletedUser = await User.findByIdAndDelete(userId);
         if (!deletedUser) {
