@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-const protect = async (req, res, next) => {
+const authenticate = async (req, res, next) => {
     let token;
 
     // Check for token in headers
@@ -24,4 +24,13 @@ const protect = async (req, res, next) => {
     }
 }
 
-module.exports = { protect };
+const authorize = (...roles) => {
+    return (req, res, next) => {
+        if (!req.user || !roles.includes(req.user.role)) {
+            return res.status(403).json({ message: 'Forbidden: You do not have the right permissions' });
+        }
+        next();
+    }
+}
+
+module.exports = { authenticate, authorize };
