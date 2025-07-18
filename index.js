@@ -8,6 +8,7 @@ const port = process.env.PORT || 3000;
 // Import routes
 const { errorHandler } = require('./middlewares/error');
 
+const authRoutes = require('./routes/auth.routes');
 const userRoutes = require('./routes/user.routes');
 
 // Middlewares
@@ -15,6 +16,7 @@ app.use(express.json());
 
 
 // Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 
 
